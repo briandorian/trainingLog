@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import { Button } from "@material-ui/core";
 
 function App() {
   return (
@@ -16,9 +17,9 @@ function App() {
         >
           Learn React
         </a>
+        <Button color="primary">Boton FEO</Button>
       </header>
     </div>
   );
 }
-
 export default App;
