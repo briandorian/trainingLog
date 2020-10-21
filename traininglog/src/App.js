@@ -5,13 +5,14 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
+import SignIn from './pages/SignIn';
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route exact path="/">
-          Signin
+          <SignIn />
         </Route>
         <Route path="/sign-up">
           Signup
@@ -20,5 +21,4 @@ function App() {
     </Router>
   );
 }
-
 export default App;
