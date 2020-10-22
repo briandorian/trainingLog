@@ -1,43 +1,44 @@
-import React,{ useState } from 'react';
+import React, { useState } from 'react';
+import { withFirebase } from '../components/firebase'
+import { Link, withRouter } from 'react-router-dom';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 
+import useStyles from '../config/theme-signinup';
+import Copyright from '../components/Copyright';
 
-import useStyles from '.././config/theme-signinup';
-import Copyright from '.././components/Copyright/index'
-import { withFirebase } from '.././components/Firebase';
-
-
-
-export default function SignInSide() {
+function SignIn(props) {
   const classes = useStyles();
-  const initialUser = {id: null, email: '', password: '', error: null, auth: null};
+
+  const initialUser = {id: null, email: '', password: '', error: null, auth: null}
 
   const [user, setUser] = useState(initialUser);
+
   const handleChange = e => {
     const {name, value} = e.target;
     setUser({...user, [name]: value})
   }
 
-  const handleSubmit = e => {
-
+  const handleSubmit = () => {
+    props.firebase.doSignInWithEmailAndPassword(user.email, user.password)
+    .then(authUser => {
+      setUser({initialUser})
+      props.history.push("/dashboard");
+    })
+    .catch(error => {
+      setUser({...user, error: error.message})
+    });
   }
 
   const isValid = user.email === '' || user.password === '';
-
-  console.log(user);
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -52,9 +53,10 @@ export default function SignInSide() {
             Sign in
           </Typography>
           <form 
-          className={classes.form} 
-          noValidate 
-          onSubmit={e => e.preventDefault()}>
+            className={classes.form} 
+            noValidate
+            onSubmit={e => e.preventDefault()}
+          >
             <TextField
               variant="outlined"
               margin="normal"
@@ -65,7 +67,7 @@ export default function SignInSide() {
               name="email"
               autoComplete="email"
               autoFocus
-              onchange={handleChange}
+              onChange={handleChange}
             />
             <TextField
               variant="outlined"
@@ -77,12 +79,11 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
-              onchange={handleChange}
+              onChange={handleChange}
             />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
+            <Typography className={classes.error}>
+              {user.error ? user.error : ''}
+            </Typography>
             <Button
               type="submit"
               fullWidth
@@ -101,8 +102,8 @@ export default function SignInSide() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link to="/sign-up">
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>
@@ -114,5 +115,6 @@ export default function SignInSide() {
       </Grid>
     </Grid>
   );
-}
+};
+
 export default withRouter(withFirebase(SignIn));

@@ -2,7 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 
-var firebaseConfig = {
+var config = {
     apiKey: "AIzaSyBL4Ujn33jIO-v5iTQUHh0z-jthlIZWfY0",
     authDomain: "traininglog-af36d.firebaseapp.com",
     databaseURL: "https://traininglog-af36d.firebaseio.com",
@@ -12,7 +12,6 @@ var firebaseConfig = {
     appId: "1:730187346365:web:66535efcd56a15310e62d4",
     measurementId: "G-EZZZXH9W6W"
   };
-
 class Firebase {
     constructor() {
         app.initializeApp(config);
@@ -47,4 +46,5 @@ class Firebase {
         ref.update(activity);
     }
 }
+
 export default Firebase;
