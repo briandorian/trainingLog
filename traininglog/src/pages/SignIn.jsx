@@ -17,6 +17,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import useStyles from '.././config/theme-signinup';
 import Copyright from '.././components/Copyright/index'
+import { withFirebase } from '.././components/Firebase';
+
 
 
 export default function SignInSide() {
@@ -113,3 +115,4 @@ export default function SignInSide() {
     </Grid>
   );
 }
+export default withRouter(withFirebase(SignIn));
