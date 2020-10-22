@@ -1,4 +1,5 @@
-import React from 'react';
+import React,{ useState } from 'react';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,43 +13,29 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+
+
+import useStyles from '.././config/theme-signinup';
 import Copyright from '.././components/Copyright/index'
 
 
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100vh',
-  },
-  image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
-    backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
 export default function SignInSide() {
   const classes = useStyles();
+  const initialUser = {id: null, email: '', password: '', error: null, auth: null};
+
+  const [user, setUser] = useState(initialUser);
+  const handleChange = e => {
+    const {name, value} = e.target;
+    setUser({...user, [name]: value})
+  }
+
+  const handleSubmit = e => {
+
+  }
+
+  const isValid = user.email === '' || user.password === '';
+
+  console.log(user);
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -62,7 +49,10 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
+          <form 
+          className={classes.form} 
+          noValidate 
+          onSubmit={e => e.preventDefault()}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -73,6 +63,7 @@ export default function SignInSide() {
               name="email"
               autoComplete="email"
               autoFocus
+              onchange={handleChange}
             />
             <TextField
               variant="outlined"
@@ -84,17 +75,20 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onchange={handleChange}
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={handleSubmit}
+              disabled={isValid}
             >
               Sign In
             </Button>
