@@ -23,6 +23,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import useStyles from '../config/theme.dashboard';
 import Copyright from '../components/Copyright';
+import Sidebar from '../components/Sidebar';
 
 function Dashboard(props) {
   let match = useRouteMatch();
@@ -34,6 +35,10 @@ function Dashboard(props) {
   };
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+  const signOut = () => {
+    props.firebase.auth.signOut();
+    props.history.push("/");
   };
 
   return (
@@ -63,9 +68,11 @@ function Dashboard(props) {
                 </IconButton>
             </Toolbar>
             </AppBar>
-
-            Sidebar
-
+            <Sidebar 
+                signOut={signOut} 
+                open={open} 
+                handleDrawerClose={handleDrawerClose} 
+            />         
             <main className={classes.content, !open ? classes.contentClosed : classes.appBarShift }>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="xl" className={classes.container}>
